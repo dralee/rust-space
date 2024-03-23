@@ -1,0 +1,9 @@
+workspace = { members = [ "01-hello/helloworld", "01-hello/hellodesc", "01-hello/guessing_game", "01-hello/variable", "01-hello/datatype"] }
+[package]
+name = "course"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
