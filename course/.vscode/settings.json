@@ -3,7 +3,8 @@
 		"editor.defaultFormatter": "rust-lang.rust-analyzer"
 	},
 	"rust-analyzer.linkedProjects": [
-		"./01-hello/guessing_game/Cargo.toml"
+		"./01-hello/guessing_game/Cargo.toml",
+		"./01-hello/ownership/Cargo.toml"
 	],
 	"rust-analyzer.checkOnSave": true
 }
