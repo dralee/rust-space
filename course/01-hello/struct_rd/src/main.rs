@@ -7,6 +7,8 @@ fn main() {
     demo();
 
     nick_struct();
+
+    struct_method();
 }
 
 
@@ -123,4 +125,36 @@ struct Rectange {
 
 fn area(rectange: &Rectange) -> u32 {
     return  rectange.width * rectange.height;
+}
+
+// 方法语法
+#[derive(Debug)]
+struct Rectange2 {
+    width: u32,
+    height: u32,
+}
+
+impl Rectange2 {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn width(&self) -> bool {
+        self.width > 0
+    }
+}
+
+fn struct_method(){
+    let rect1 = Rectange2 {
+        width: 30,
+        height: 62,
+    };
+
+    println!(
+        "The area of the rectangle is {} sequare pixels.",
+        rect1.area()
+    );
+    if rect1.width() {
+        println!("The rectangle has a nonzero width; it is {}", rect1.width);
+    }
 }
