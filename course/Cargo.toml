@@ -1,4 +1,4 @@
-workspace = { members = [ "01-hello/helloworld", "01-hello/hellodesc", "01-hello/guessing_game", "01-hello/variable", "01-hello/datatype", "01-hello/ownership", "01-hello/struct_rd"] }
+workspace = { members = [ "01-hello/helloworld", "01-hello/hellodesc", "01-hello/guessing_game", "01-hello/variable", "01-hello/datatype", "01-hello/ownership", "01-hello/struct_rd", "01-hello/enums"] }
 [package]
 name = "course"
 version = "0.1.0"
