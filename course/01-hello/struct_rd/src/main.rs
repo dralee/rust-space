@@ -142,6 +142,24 @@ impl Rectange2 {
     fn width(&self) -> bool {
         self.width > 0
     }
+
+    fn can_hold(&self, other: &Rectange2) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    // 非关联函数，类似于类方法
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size
+        }
+    }
+}
+// 允许有多个impl实现块
+impl Rectange2 {
+    fn is_square(&self) -> bool {
+        self.width == self.height
+    }
 }
 
 fn struct_method(){
@@ -157,4 +175,25 @@ fn struct_method(){
     if rect1.width() {
         println!("The rectangle has a nonzero width; it is {}", rect1.width);
     }
+
+    let rect1 = Rectange2 {
+        width: 30,
+        height: 50,
+    };
+    let rect2 = Rectange2 {
+        width: 10,
+        height: 40,
+    };
+    let rect3 = Rectange2 {
+        width: 60,
+        height: 45
+    };
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+
+    let rect4 = Rectange2::square(20);
+    dbg!(&rect4);
+
+    println!("rect1 is square? {}", rect1.is_square());
+    println!("rect4 is square? {}", rect4.is_square());
 }
