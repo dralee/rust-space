@@ -14,3 +14,7 @@ cargo build
 cd [projectname]
 cargo run
 ```
+#### 创建lib
+```shell
+cargo new [projectname] --lib
+```
