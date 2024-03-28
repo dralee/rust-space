@@ -18,3 +18,5 @@ cargo run
 ```shell
 cargo new [projectname] --lib
 ```
+
+教材: https://doc.rust-lang.org/book/title-page.html

@@ -8,7 +8,10 @@
 		"./02-package/backyard/Cargo.toml",
 		"./02-package/backyard/Cargo.toml",
 		"./02-package/restaurant2/Cargo.toml",
-		"./02-package/restaurant2/Cargo.toml"
+		"./02-package/restaurant2/Cargo.toml",
+		"./04-handling/duplication/Cargo.toml",
+		"./04-handling/duplication/Cargo.toml",
+		"./04-handling/duplication/Cargo.toml"
 	],
 	"rust-analyzer.checkOnSave": true
 }
