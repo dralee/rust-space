@@ -11,7 +11,8 @@
 		"./02-package/restaurant2/Cargo.toml",
 		"./04-handling/duplication/Cargo.toml",
 		"./04-handling/duplication/Cargo.toml",
-		"./04-handling/duplication/Cargo.toml"
+		"./04-handling/duplication/Cargo.toml",
+		"./05-test/autotest/Cargo.toml"
 	],
 	"rust-analyzer.checkOnSave": true
 }
