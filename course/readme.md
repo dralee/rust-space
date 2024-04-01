@@ -84,6 +84,17 @@ cargo yank --vers 1.0.1 --undo # 撤消指定拉取1.0.1版本
 cargo install xxx # 安装,如 cargo install ripgrep
 # 安装到$HOME/.cargo/bin中
 ```
+### 智能指针
+* Box<T> 用于堆上分配值
+	* 当有一类型,其大小编译时无法知道,并且希望在需要确切大小的上下文中使用该类型的值时;
+	* 当拥有大量数据并且想要转让所有权,但确保在这样做时不会复制数据;
+	* 当想拥有一个值,并且只关心它是一种实现特定特征类型,而不是属于特定类型时
+* Rc<T> 一种支持多重所有权的引用计数类型
+* Ref<T>和RefMut<T>,通过RefCell<T>访问,一种在运行时而不是编译时强制执行借用规则的类型
+#### Deref
+* 从&T到&U when T: Deref<Target=U>
+* 从&mut T到&mut U when T:DerefMut<Target=U>
+* 从&mut T到&U when T:Deref<Target=U>
 
 
 教材: https://doc.rust-lang.org/book/title-page.html

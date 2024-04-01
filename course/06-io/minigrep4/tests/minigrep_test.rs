@@ -1,5 +1,5 @@
 
-use minigrep3;
+use minigrep4;
 
 #[test]
 fn serach_text(){
@@ -8,7 +8,7 @@ fn serach_text(){
 Rust:
 safe, fast, productive.
 Pick three.";
-	assert_eq!(vec!["safe, fast, productive."], minigrep3::search(query, contents));
+	assert_eq!(vec!["safe, fast, productive."], minigrep4::search(query, contents));
 }
 
 #[test]
@@ -19,5 +19,5 @@ Rust:
 safe, fast, productive.
 Pick three.
 Trust me.";
-	assert_eq!(vec!["Rust:", "Trust me."], minigrep3::search_case_insensitive(query, contents))
+	assert_eq!(vec!["Rust:", "Trust me."], minigrep4::search_case_insensitive(query, contents))
 }
