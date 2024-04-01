@@ -12,7 +12,8 @@
 		"./04-handling/duplication/Cargo.toml",
 		"./04-handling/duplication/Cargo.toml",
 		"./04-handling/duplication/Cargo.toml",
-		"./05-test/autotest/Cargo.toml"
+		"./05-test/autotest/Cargo.toml",
+		"./09-workspace/add/adder/Cargo.toml"
 	],
 	"rust-analyzer.checkOnSave": true
 }
