@@ -8,5 +8,5 @@ pub mod garden; // 在包含garden中找代码
 
 fn main() {
     let plant = Asparagus{};
-    println!("I'm grwing {:?}!", plant);
+    println!("I'm growing {:?}!", plant);
 }
