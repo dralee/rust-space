@@ -16,7 +16,8 @@
 		"./09-workspace/add/adder/Cargo.toml",
 		"./10-smartpointer/boxpointer/Cargo.toml",
 		"./10-smartpointer/custpointer/Cargo.toml",
-		"./10-smartpointer/refcellmut/Cargo.toml"
+		"./10-smartpointer/refcellmut/Cargo.toml",
+		"./11-concurrency/sharestate/Cargo.toml"
 	],
 	"rust-analyzer.checkOnSave": true
 }
