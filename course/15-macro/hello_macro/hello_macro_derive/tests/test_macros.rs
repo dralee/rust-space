@@ -2,6 +2,9 @@
  * 测试自定义宏
  * 2024.04.17 by dralee
  */
+use hello_macro::HelloMacro;
+
+extern crate hello_macro_derive;
 use hello_macro_derive::HelloMacro;
 
 #[derive(HelloMacro)]

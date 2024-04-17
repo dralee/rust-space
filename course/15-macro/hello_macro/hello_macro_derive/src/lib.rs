@@ -6,6 +6,7 @@
  *  >类似函数的宏，看起来像函数调用，但对指定为其参数的标记进行操作
  * 2024.04.16 by dralee
  */
+extern crate proc_macro;
 use proc_macro::TokenStream; // proc_macro来自Rust,因此不需要依赖，是编译器的API，允许从代码中读取和操作Rust代码
 use quote::quote; // quote将数据结构转换为syn返回Rust代码
 use syn; // syn将Rust代码从字符串解析为可执行操作的数据结构
@@ -23,9 +24,9 @@ pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
 fn impl_hello_macro(ast: &syn::DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl HelloMacro fror #name {
+        impl HelloMacro for #name {
             fn hello_macro() {
-                println!("Hello, Macro! My name is {}", stringif!(#name));
+                println!("Hello, Macro! My name is {}", stringify!(#name));
             }
         }
     };

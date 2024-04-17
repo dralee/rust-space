@@ -11,3 +11,4 @@ proc-macro = true
 [dependencies]
 syn = "2.0.58"
 quote = "1.0"
+hello_macro = {path = "../../hello_macro"} # 本库中依赖
