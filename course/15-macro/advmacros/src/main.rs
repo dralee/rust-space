@@ -27,10 +27,10 @@ fn main() {
  *   任何地方定义和调用函数。
  */
 // 使用定义宏
-use hello_macro::HelloMacro;
+//use hello_macro::HelloMacro;
 use hello_macro_derive::HelloMacro;
 
-// struct Pancakes;
+struct Pancakes;
 
 #[derive(HelloMacro)]
 struct Pancakes2;

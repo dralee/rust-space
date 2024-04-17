@@ -1,5 +1,5 @@
 [package]
-name = "hello_macro_derive"
+name = "demoproc"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,5 +9,3 @@ edition = "2021"
 proc-macro = true
 
 [dependencies]
-syn = "2.0.58"
-quote = "1.0"
