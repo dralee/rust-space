@@ -1,2 +1,2 @@
 [workspace]
-members = [ "multithread","singlethread", "singlethreadlow"]
+members = [ "multithread", "multithreadbylib","singlethread", "singlethreadlow"]

@@ -3,6 +3,11 @@
 cargo new [projectname]
 ```
 
+### 检测编译
+```shell
+cargo check
+```
+
 #### 编译
 ```shell
 cd [projectname]
