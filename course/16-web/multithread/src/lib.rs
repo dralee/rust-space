@@ -2,63 +2,61 @@
  * 自定义线程池
  * 2024.04.18 by dralee
  */
-
-
-/* // version 1 
+/* // version 1
 pub struct ThreadPool;
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
-		ThreadPool
-	}
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
+        ThreadPool
+    }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
 
-	}
+    }
 }*/
 
 /* // version 2
 use std::thread;
 
 pub struct ThreadPool{
-	threads: Vec<thread::JoinHandle<()>>,
+    threads: Vec<thread::JoinHandle<()>>,
 }
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let mut threads = Vec::with_capacity(size);
+        let mut threads = Vec::with_capacity(size);
 
-		for _ in 0..size {
-			// create some threads and store them in the vector
-		}
+        for _ in 0..size {
+            // create some threads and store them in the vector
+        }
 
-		ThreadPool { threads }
-	}
+        ThreadPool { threads }
+    }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
 
-	}
+    }
 }*/
 
 /*
@@ -68,45 +66,45 @@ use std::thread;
 
 // 使用工作单元
 pub struct ThreadPool{
-	workers: Vec<Worker>,
+    workers: Vec<Worker>,
 }
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let mut workers = Vec::with_capacity(size);
+        let mut workers = Vec::with_capacity(size);
 
-		for id in 0..size {
-			workers.push(Worker::new(id));
-		}
+        for id in 0..size {
+            workers.push(Worker::new(id));
+        }
 
-		ThreadPool { workers }
-	}
+        ThreadPool { workers }
+    }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
 
-	}
+    }
 }
 
 struct Worker {
-	id: usize,
-	thread: thread::JoinHandle<()>,
+    id: usize,
+    thread: thread::JoinHandle<()>,
 }
 impl Worker {
-	fn new(id: usize) -> Worker {
-		let thread = thread::spawn(|| {});
-		Worker { id, thread }
-	}
+    fn new(id: usize) -> Worker {
+        let thread = thread::spawn(|| {});
+        Worker { id, thread }
+    }
 }
 */
 
@@ -116,53 +114,53 @@ use std::{sync::mpsc,  thread};
 
 // 使用通道通信
 pub struct ThreadPool{
-	workers: Vec<Worker>,
-	sender: mpsc::Sender<Job>,
+    workers: Vec<Worker>,
+    sender: mpsc::Sender<Job>,
 }
 
 struct Job;
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let (sender, receiver) = mpsc::channel();
+        let (sender, receiver) = mpsc::channel();
 
-		let mut workers = Vec::with_capacity(size);
+        let mut workers = Vec::with_capacity(size);
 
-		for id in 0..size {
-			workers.push(Worker::new(id, receiver)); // value moved here, in previous iteration of loop
-		}
+        for id in 0..size {
+            workers.push(Worker::new(id, receiver)); // value moved here, in previous iteration of loop
+        }
 
-		ThreadPool { workers, sender }
-	}
+        ThreadPool { workers, sender }
+    }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
 
-	}
+    }
 }
 
 struct Worker {
-	id: usize,
-	thread: thread::JoinHandle<()>,
+    id: usize,
+    thread: thread::JoinHandle<()>,
 }
 impl Worker {
-	fn new(id: usize, receiver: mpsc::Receiver<Job>) -> Worker {
-		let thread = thread::spawn(|| {
-			receiver;
-		});
+    fn new(id: usize, receiver: mpsc::Receiver<Job>) -> Worker {
+        let thread = thread::spawn(|| {
+            receiver;
+        });
 
-		Worker { id, thread }
-	}
+        Worker { id, thread }
+    }
 }*/
 
 /*
@@ -171,61 +169,61 @@ use std::{sync::{mpsc, Arc, Mutex},  thread};
 
 // 使用通道通信
 pub struct ThreadPool{
-	workers: Vec<Worker>,
-	sender: mpsc::Sender<Job>,
+    workers: Vec<Worker>,
+    sender: mpsc::Sender<Job>,
 }
 
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let (sender, receiver) = mpsc::channel();
+        let (sender, receiver) = mpsc::channel();
 
-		let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
-		
-		let mut workers = Vec::with_capacity(size);
+        let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
 
-		for id in 0..size {
-			workers.push(Worker::new(id, Arc::clone(&receiver)));
-		}
+        let mut workers = Vec::with_capacity(size);
 
-		ThreadPool { workers, sender }
-	}
+        for id in 0..size {
+            workers.push(Worker::new(id, Arc::clone(&receiver)));
+        }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
-		let job = Box::new(f);
+        ThreadPool { workers, sender }
+    }
 
-		self.sender.send(job).unwrap(); // 发送job到worker工作者线程
-	}
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
+        let job = Box::new(f);
+
+        self.sender.send(job).unwrap(); // 发送job到worker工作者线程
+    }
 }
 
 struct Worker {
-	id: usize,
-	thread: thread::JoinHandle<()>,
+    id: usize,
+    thread: thread::JoinHandle<()>,
 }
 impl Worker {
-	fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
-		let thread = thread::spawn(move || loop {
-			let job = receiver.lock().unwrap().recv().unwrap();
+    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
+        let thread = thread::spawn(move || loop {
+            let job = receiver.lock().unwrap().recv().unwrap();
 
-			println!("Worker {id} got a job; executing.");
+            println!("Worker {id} got a job; executing.");
 
-			job();
-		});
+            job();
+        });
 
-		Worker { id, thread }
-	}
+        Worker { id, thread }
+    }
 }
 */
 
@@ -236,166 +234,169 @@ use std::{sync::{mpsc, Arc, Mutex},  thread};
 
 // 使用通道通信
 pub struct ThreadPool{
-	workers: Vec<Worker>,
-	sender: mpsc::Sender<Job>,
+    workers: Vec<Worker>,
+    sender: mpsc::Sender<Job>,
 }
 
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let (sender, receiver) = mpsc::channel();
+        let (sender, receiver) = mpsc::channel();
 
-		let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
-		
-		let mut workers = Vec::with_capacity(size);
+        let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
 
-		for id in 0..size {
-			workers.push(Worker::new(id, Arc::clone(&receiver)));
-		}
+        let mut workers = Vec::with_capacity(size);
 
-		ThreadPool { workers, sender }
-	}
+        for id in 0..size {
+            workers.push(Worker::new(id, Arc::clone(&receiver)));
+        }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
-		let job = Box::new(f);
+        ThreadPool { workers, sender }
+    }
 
-		self.sender.send(job).unwrap(); // 发送job到worker工作者线程
-	}
+    pub fn execute<F>(&self, f: F)
+    where F: FnOnce() + Send + 'static,
+    {
+        let job = Box::new(f);
+
+        self.sender.send(job).unwrap(); // 发送job到worker工作者线程
+    }
 }
 
 // 实现Drop特征，以实现优雅退出
 impl Drop for ThreadPool {
-	fn drop(&mut self) {
-		for worker in &mut self.workers {
-			println!("Shutting down worker {}", worker.id);
+    fn drop(&mut self) {
+        for worker in &mut self.workers {
+            println!("Shutting down worker {}", worker.id);
 
-			if let Some(thread) = worker.thread.take() {
-				thread.join().unwrap(); // 加到主线中等待
-			}
-		}
-	}
+            if let Some(thread) = worker.thread.take() {
+                thread.join().unwrap(); // 加到主线中等待
+            }
+        }
+    }
 }
 
 struct Worker {
-	id: usize,
-	thread: Option<thread::JoinHandle<()>>,
+    id: usize,
+    thread: Option<thread::JoinHandle<()>>,
 }
 impl Worker {
-	fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
-		let thread = thread::spawn(move || loop {
-			let job = receiver.lock().unwrap().recv().unwrap();
+    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
+        let thread = thread::spawn(move || loop {
+            let job = receiver.lock().unwrap().recv().unwrap();
 
-			println!("Worker {id} got a job; executing.");
+            println!("Worker {id} got a job; executing.");
 
-			job();
-		});
+            job();
+        });
 
-		Worker {
-			id,
-			thread: Some(thread) 
-		}
-	}
+        Worker {
+            id,
+            thread: Some(thread)
+        }
+    }
 }
 */
-
 // 解决多消问题，使用互斥，worker线程退出计划，sender也可移除，防止结束时不断接收连接发送给worker消息
-use std::{sync::{mpsc, Arc, Mutex},  thread};
+use std::{
+    sync::{mpsc, Arc, Mutex},
+    thread,
+};
 
 // 使用通道通信
-pub struct ThreadPool{
-	workers: Vec<Worker>,
-	sender: Option<mpsc::Sender<Job>>,
+pub struct ThreadPool {
+    workers: Vec<Worker>,
+    sender: Option<mpsc::Sender<Job>>,
 }
 
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
-	/// Create a new ThreadPool.
-	/// 
-	/// The size is the number of threads in the pool.
-	/// 
-	/// # Panics
-	/// 
-	/// The `new` function will panic if the size is zero.
-	pub fn new(size: usize) -> ThreadPool {
-		assert!(size > 0);
+    /// Create a new ThreadPool.
+    ///
+    /// The size is the number of threads in the pool.
+    ///
+    /// # Panics
+    ///
+    /// The `new` function will panic if the size is zero.
+    pub fn new(size: usize) -> ThreadPool {
+        assert!(size > 0);
 
-		let (sender, receiver) = mpsc::channel();
+        let (sender, receiver) = mpsc::channel();
 
-		let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
-		
-		let mut workers = Vec::with_capacity(size);
+        let receiver = Arc::new(Mutex::new(receiver)); // receiver变为互斥
 
-		for id in 0..size {
-			workers.push(Worker::new(id, Arc::clone(&receiver)));
-		}
+        let mut workers = Vec::with_capacity(size);
 
-		ThreadPool { 
-			workers, 
-			sender: Some(sender) 
-		}
-	}
+        for id in 0..size {
+            workers.push(Worker::new(id, Arc::clone(&receiver)));
+        }
 
-	pub fn execute<F>(&self, f: F) 
-	where F: FnOnce() + Send + 'static,
-	{
-		let job = Box::new(f);
+        ThreadPool {
+            workers,
+            sender: Some(sender),
+        }
+    }
 
-		self.sender.as_ref().unwrap().send(job).unwrap(); // 发送job到worker工作者线程
-	}
+    pub fn execute<F>(&self, f: F)
+    where
+        F: FnOnce() + Send + 'static,
+    {
+        let job = Box::new(f);
+
+        self.sender.as_ref().unwrap().send(job).unwrap(); // 发送job到worker工作者线程
+    }
 }
 
 // 实现Drop特征，以实现优雅退出
 impl Drop for ThreadPool {
-	fn drop(&mut self) {
-		drop(self.sender.take()); // 移除sender并释放，通道将停止，继续从通道中获取worker将异常
+    fn drop(&mut self) {
+        drop(self.sender.take()); // 移除sender并释放，通道将停止，继续从通道中获取worker将异常
 
-		for worker in &mut self.workers {
-			println!("Shutting down worker {}", worker.id);
+        for worker in &mut self.workers {
+            println!("Shutting down worker {}", worker.id);
 
-			if let Some(thread) = worker.thread.take() {
-				thread.join().unwrap(); // 加到主线中等待
-			}
-		}
-	}
+            if let Some(thread) = worker.thread.take() {
+                thread.join().unwrap(); // 加到主线中等待
+            }
+        }
+    }
 }
 
 struct Worker {
-	id: usize,
-	thread: Option<thread::JoinHandle<()>>,
+    id: usize,
+    thread: Option<thread::JoinHandle<()>>,
 }
 impl Worker {
-	fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
-		let thread = thread::spawn(move || loop {
-			let message = receiver.lock().unwrap().recv();
+    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
+        let thread = thread::spawn(move || loop {
+            let message = receiver.lock().unwrap().recv();
 
-			match message {
-				Ok(job) => {
-					println!("Worker {id} got a job; executing.");
-					job();
-				}
-				Err(_)=>{
-					println!("Worker {id} disconnected; shutting down.");
-					break;
-				}
-			}
-		});
+            match message {
+                Ok(job) => {
+                    println!("Worker {id} got a job; executing.");
+                    job();
+                }
+                Err(_) => {
+                    println!("Worker {id} disconnected; shutting down.");
+                    break;
+                }
+            }
+        });
 
-		Worker {
-			id,
-			thread: Some(thread) 
-		}
-	}
+        Worker {
+            id,
+            thread: Some(thread),
+        }
+    }
 }
