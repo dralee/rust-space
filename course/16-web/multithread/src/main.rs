@@ -48,6 +48,8 @@ fn listen(){
     }
 }*/
 
+/*
+
 /**
  * 创建有限的线程数量（线程池）
  * 如果同时请求很多的话，会耗死系统资源（如DoS攻击）
@@ -67,6 +69,46 @@ fn listen(){
             handle_connection(stream);
         });
     }
+}
+*/
+
+/**
+ * 创建有限的线程数量（线程池）
+ * 如果同时请求很多的话，会耗死系统资源（如DoS攻击）
+ * 为了演示版本6中优雅退出，这里正常关闭服务前接受两个请求
+ * 
+ * 可在浏览器中访问：http://127.0.0.1:7070、http://127.0.0.1:7070/sleep，并不会因为sleep卡而导致其他请求不可访问
+ * 控制台将打印：Connection established!
+ */
+fn listen(){
+    let listener = TcpListener::bind("127.0.0.1:7070").unwrap();
+    let pool = ThreadPool::new(4); // 创建工作线程为4的线程池
+
+    for stream in listener.incoming().take(2) { // 只获取2个请求就退出，为了演示优雅退出逻辑
+        let stream = stream.unwrap();
+        println!("Connection established!");
+        
+        pool.execute(||{
+            handle_connection(stream);
+        });
+    }
+
+    println!("Shutting donw.");
+    /*
+Connection established!
+Worker 0 got a job; executing.
+Connection established!
+Shutting donw.
+Shutting down worker 0
+Worker 1 got a job; executing.
+Worker 2 disconnected; shutting down.
+Worker 3 disconnected; shutting down.
+Worker 1 disconnected; shutting down.
+Worker 0 disconnected; shutting down.
+Shutting down worker 1
+Shutting down worker 2
+Shutting down worker 3
+     */
 }
 
 /**

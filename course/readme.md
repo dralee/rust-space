@@ -101,5 +101,16 @@ cargo install xxx # 安装,如 cargo install ripgrep
 * 从&mut T到&mut U when T:DerefMut<Target=U>
 * 从&mut T到&U when T:Deref<Target=U>
 
+### 使用关键字标识符变量及方法名作为定义时，可在其前添加“r#”进行适配
+```rush
+fn r#match(needle: &str, hasystack: &str) -> bool {
+	hasystack.contains(needle)
+}
+
+fn main(){
+	assert!(r#match("foo", "foobar"));
+}
+```
+
 
 教材: https://doc.rust-lang.org/book/title-page.html
