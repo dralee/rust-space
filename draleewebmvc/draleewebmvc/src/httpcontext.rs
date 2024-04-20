@@ -2,7 +2,9 @@
  * http上下文，mvc入口起点
  * 2024.04.19 by dralee
  */
-use std::{cell::RefCell, collections::HashMap, io::{self, BufRead, BufReader, Write}, net::TcpStream};
+use std::{cell::RefCell, collections::HashMap, io::{self}};
+use crate::streamrw::StreamRW;
+use crate::request::Request;
 
 /// HttpContext Http上下文
 /// 
@@ -13,12 +15,16 @@ pub struct HttpContext {
 }
 impl HttpContext {
 	/// 创建HttpContext对象
-	pub fn new(buf: &mut impl io::Read) -> HttpContext {
-		//buf.read(buf)
-		// if let Some(reqline) = lines.get(0) {
-		// 	let items:Vec<&str> = reqline.split(" ").collect();
-		// 	println!("items: {:?}", items);
-		// }
+	pub fn new(mut buf: &mut impl io::Read) -> HttpContext {
+		// match StreamRW::read_str(&mut buf) {
+		// 	Ok(content) => {
+		// 		println!("the content: {content}");
+		// 	},
+		// 	Err(e) => println!("error: {:?}", e),
+		// };
+		let data = StreamRW::read(buf);
+		let request = Request::new(data);
+		println!("request: {:#?}", request);
 		
 		HttpContext {
 			host:"".to_string(),
@@ -28,16 +34,17 @@ impl HttpContext {
 	}
 
 	/// 响应
-	pub fn response(&mut self) -> String {
+	pub fn response(&mut self, writer: &mut impl io::Write) {
 		let status_line = "HTTP/1.1 200 OK";
-		let contents = "<h1>Hello Rust, dralee web context!</h1>";
+		let contents = "<h1>Hello Rust, dralee web context2222!</h1>";
 		let len = contents.len();
 		let resp = format!("{status_line}\r\nContent-Length: {len}\r\n\r\n{contents}");
 		println!("==>{resp}");
-		resp
+		//resp
 		// self.stream.write_all(response.as_bytes()).unwrap();
 		
 		// println!("here....");
-		
+		writer.write_all(resp.as_bytes()).unwrap();
+		writer.flush().unwrap();
 	}
 }

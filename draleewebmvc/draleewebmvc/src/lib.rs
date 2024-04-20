@@ -5,6 +5,7 @@ pub mod threadpool;
 pub mod server;
 pub mod httpcontext;
 pub mod streamrw;
+pub mod request;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right

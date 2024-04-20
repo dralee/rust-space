@@ -2,7 +2,7 @@
  * http服务
  * 2024.04.19 by dralee
  */
-use std::{cell::RefCell, fmt::Error, io::{BufRead, BufReader, BufWriter, Read, Write}, net::{TcpListener, TcpStream}};
+use std::{cell::RefCell, fmt::Error, io::{BufReader, BufWriter, Write}, net::{TcpListener, TcpStream}};
 use crate::httpcontext::HttpContext;
 use crate::threadpool::ThreadPool;
 
@@ -54,8 +54,10 @@ fn handle_connection(mut stream: TcpStream) {
 	let mut writer = BufWriter::new(stream);
 
 	let mut context = HttpContext::new(&mut reader);
-	let response = context.response();
-	
+	// let response = context.response();
+	// writer.write_all(response.as_bytes()).unwrap();
+	// writer.flush().unwrap();
+	context.response(&mut writer);
 	//stream.write_all(response.as_bytes()).unwrap();
 	//stream.flush();
 	println!("end....");
