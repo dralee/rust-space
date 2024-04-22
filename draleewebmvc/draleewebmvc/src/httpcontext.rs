@@ -2,16 +2,17 @@
  * http上下文，mvc入口起点
  * 2024.04.19 by dralee
  */
-use std::{cell::RefCell, collections::HashMap, io::{self}};
+use std::{cell::RefCell, collections::HashMap, io::{self}, rc::Rc};
 use crate::streamrw::StreamRW;
 use crate::request::Request;
 
 /// HttpContext Http上下文
 /// 
 pub struct HttpContext {
-	headers: HashMap<String, String>,
-	path: String,
-	host: String,
+	headers: Rc<HashMap<Rc<String>, Rc<String>>>,
+	path: Rc<String>,
+	host: Rc<String>,
+	request: Rc<Request>,
 }
 impl HttpContext {
 	/// 创建HttpContext对象
@@ -27,9 +28,10 @@ impl HttpContext {
 		println!("request: {:#?}", request);
 		
 		HttpContext {
-			host:"".to_string(),
-			path:"x".to_string(),
-			headers:HashMap::new()
+			host: Rc::clone(&request.host),
+			path: Rc::clone(&request.path),
+			headers: Rc::clone(&request.headers),
+			request: Rc::new(request)
 		}
 	}
 

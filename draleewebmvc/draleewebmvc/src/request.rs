@@ -2,23 +2,24 @@
  * 请求对象
  * 2024.04.20 by dralee
  */
-use std::{collections::{btree_map::Keys, HashMap}, rc::Rc};
+use std::collections::HashMap;
+use std::rc::Rc;
 
 ///
 /// http请求实体
 /// 
 #[derive(Debug)]
 pub struct Request {
-	pub host: String,
-	pub url: String,
-	pub path: String,
-	pub query_string: String,
-	pub query: HashMap<String, Vec<String>>,
-	pub content_type: String,
-	pub user_agent: String,
-	pub headers: HashMap<String, String>,
-	pub method: String,
-	pub body: Vec<u8>,
+	pub host: Rc<String>,
+	pub url: Rc<String>,
+	pub path: Rc<String>,
+	pub query_string: Rc<String>,
+	pub query: Rc<HashMap<Rc<String>, Vec<Rc<String>>>>,
+	pub content_type: Rc<String>,
+	pub user_agent: Rc<String>,
+	pub headers: Rc<HashMap<Rc<String>, Rc<String>>>,
+	pub method: Rc<String>,
+	pub body: Rc<Vec<u8>>,
 }
 
 impl Request {
@@ -47,27 +48,31 @@ impl Request {
 		Request::resolve(lines, buffer)
 	}
 
-	fn resolve_query(query_string: &str) -> HashMap<String, Vec<String>> {
+	/// 解析query参数
+	fn resolve_query(query_string: &str) -> HashMap<Rc<String>, Vec<Rc<String>>> {
 		let mut query = HashMap::new();
+		if query_string.len() == 0 {
+			return query;
+		}
 		query_string.split('&').for_each(|s|{
 			let items:Vec<&str> = s.split('=').collect();
-			let mut value:Rc<String> = Rc::new(String::from(""));
+			let mut value:String = String::from("");
 			let key = items[0].to_string();
 			if items.len() >= 1 {				
 				if items.len() > 2 {
-					value = Rc::new(items[1..].join("="));
+					value = items[1..].join("=");
 				} else {
-					value = Rc::new(items[1].to_string());
+					value = items[1].to_string();
 				}
 			}
 
-			query.entry(key).and_modify(|v:&mut Vec<String>|v.push(Rc::clone(&value).to_string())).or_insert(vec![Rc::clone(&value).to_string()]);			
-			//query.insert(key, value_set);
+			query.entry(Rc::new(key)).or_insert_with(Vec::new).push(Rc::new(value));
 		});
 
 		query
 	}
 
+	/// 解决请求行内容
 	fn resolve(lines: Vec<String>, buffer: Vec<u8>) -> Request {
 		let head_line_items:Vec<&str> = lines[0].split(' ').collect();
 		let url = head_line_items[1];
@@ -113,23 +118,23 @@ impl Request {
 					_ => ()
 				}
 
-				headers.insert(key.to_string(), val.to_string());
+				headers.insert(Rc::new(key.to_string()), Rc::new(val.to_string()));
 			}
 		}
 
 		let query = Request::resolve_query(&query_string);
 
 		Request {
-			headers,
-			path,
-			method: method.to_string(),
-			query_string,
-			query,
-			body: buffer,
-			host: host,
-			url: url.to_string(),
-			user_agent,
-			content_type,
+			headers: Rc::new(headers),
+			path: Rc::new(path),
+			method: Rc::new(method.to_string()),
+			query_string: Rc::new(query_string),
+			query: Rc::new(query),
+			body: Rc::new(buffer),
+			host: Rc::new(host),
+			url: Rc::new(url.to_string()),
+			user_agent: Rc::new(user_agent),
+			content_type: Rc::new(content_type),
 		}
 	}
 }
