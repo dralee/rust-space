@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ws</title>        
+    </head>
+    <body>
+        <div>
+            <div><input type="text" name="content"><button onclick="socket.send(document.querySelector('input[name=content]').value);">Send</button></div>
+            <div id="messages"></div>
+        </div>
+        <script type="text/javascript">
+            const socket = new WebSocket("ws://127.0.0.1:8080");
+            socket.onopen = function () {
+                socket.send("Hello Server!");
+            };
+            socket.onmessage = function (event) {
+                //console.log(event.data);
+                document.querySelector('#messages').innerHTML += event.data + '<br/>';
+            };
+        </script>
+    </body>
+</html>
